@@ -3,10 +3,15 @@ from bs4 import BeautifulSoup
 import pandas as pd
 import time
 
-print("hello world")
+# import HTMLSession from requests_html
+from requests_html import HTMLSession
+ 
+# create an HTML Session object
+session = HTMLSession()
 
-r = requests.get('https://depauw.campuslabs.com/engage/organizations')
-time.sleep(5)  # suspend execution for 5 secs
-# html = r.text
-soup = BeautifulSoup(r.content, features="html.parser")
+# Use the object above to connect to needed webpage
+resp = session.get('https://depauw.campuslabs.com/engage/organizations')
+
+# Run JavaScript code on webpage
+resp.html.render()
 breakpoint()

@@ -40,7 +40,8 @@ def response(value):
     time.sleep(np.random.choice([1,2,3], size=1, replace=False)[0])
     print(ans)
 
-def score():
+def score(total, num_question, ratio_correct):
+    return (total - num_question) * ratio_correct
 
 if __name__ == "__main__":
     df = pd.read_csv('./data/Q_CDI.csv')
@@ -48,6 +49,7 @@ if __name__ == "__main__":
     read_question = read_question.set_index('ID')
 
     org = df['Organization']
+
     while True:
         curr_org = np.random.choice(org, size=1, replace=False)[0]
         goal = df.loc[df['Organization'] == curr_org].iloc[:, 4:]
@@ -71,19 +73,29 @@ if __name__ == "__main__":
             elif choice == 2:
                 guess = input('Input your answer: ')
                 ratio_correct = fuzz.ratio(guess, curr_org) / 100
+                print(ratio_correct)
                 if ratio_correct == 1:
                     print('Perfect! I knew you could do it')
-                elif ratio_correct < 1 and ratio_correct >= 60:
+                if ratio_correct < 1 and ratio_correct >= 60:
                     print("Outstanding! I knew you could do it!")
-                elif ratio_correct < 60 and ratio_correct >= 40:
+                if ratio_correct < 60 and ratio_correct >= 40:
                     print("Not bad!  I couldn't have done it better!")
-                elif ratio_correct < 40:
+                if ratio_correct < 40:
                     print("Nice try! But you gotta be better next time")
                 
                 if ratio_correct != 1:
-                    print('The correct answer is: ', curr_org)
+                    print(f'Your answer matches {ratio_correct*100}% with our answer. \n The correct answer is: ', curr_org)
             
-                score = score()
+                score = score(len(question), num_question, ratio_correct)
+                print(f'Your score is: {score}')
+                break
+        not_or_continue = int(input('Do you wanna continue?'))
+        if not_or_continue == 1:
+            continue
+        elif not_or_continue == 0:
+            break
+                
+        
             
 
         

@@ -89,19 +89,11 @@ if __name__ == "__main__":
                 score = score(len(question), num_question, ratio_correct)
                 print(f'Your score is: {score}')
                 break
+        
         not_or_continue = int(input('Do you wanna continue?'))
+
         if not_or_continue == 1:
             continue
         elif not_or_continue == 0:
             break
                 
-        
-            
-
-        
-    
-    
-    
-
-
-    

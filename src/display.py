@@ -1,9 +1,4 @@
 import pygame
-# import os
-# os.environ["SDL_VIDEODRIVER"]="x11"
-
-import os
-os.environ["SDL_VIDEODRIVER"] = "dummy"
 
 pygame.init()
 screen = pygame.display.set_mode((640, 240))

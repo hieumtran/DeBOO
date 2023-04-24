@@ -1,20 +1,20 @@
 ID,Questions
-AA,Does this organization primarily focus on promoting and strengthening African-American culture?
+AA,Does this organization primarily promote African-American culture?
 Academic,Does this organization primarily promote academic activities?
 Dance,Does this organization primarily promote dancing activities?
 SC,Does this organization primarily promote a specific culture?
 DC,Does this organization primarily promote various cultures?
 Asian,Does this organization primarily promote Asian activities and cultures?
 Latino,Does this organization primarily promote Latino activities?
-Female,Does this organization primarily promote events that support female community?
+Female,Does this organization primarily promote female community?
 Vietnam,Does this organization primarily promote Vietnamese culture?
 China,Does this organization primarily promote China culture?
 Drag,Did this orgnaization host a drag show?
 Formal,Does this organization has a formal event?
 ST,Does this organization frequently hold study table events?
 Karaoke,Did this organization host a Karoke Night Event in the past?
-GradJob,Did this organization hold events that assist and support students in finding jobs and grad school?
-LGBTQ+,Does this organization primarily educate and promote LGBTQ+ community?
+GradJob,Did this organization assist students in finding jobs or grad school?
+LGBTQ+,Does this organization primarily promote LGBTQ+ community?
 Ball,Did this organization hold a Dance Party at UB?
 Dinner,Did this organization hold a cross-cultural dinner?
 GuestSpeaker,Did this organization invite a guest speaker?

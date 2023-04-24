@@ -1,16 +1,7 @@
 import pygame
 from guess_game import *
 from question_frame import *
-
-def text_box(content, loctextX, loctextY, screen):
-    font = pygame.font.Font('freesansbold.ttf', 32)
-    text = font.render(content, 1, (0, 0, 0))
-
-    # text surface object
-    textRect = text.get_rect()
-    # set the center of the rectangular object.
-    textRect.center = (loctextX*3/5, loctextY*1/2.7)
-    screen.blit(text, textRect)
+import pandas as pd
 
 if __name__ == "__main__":
     # Init screen
@@ -25,15 +16,20 @@ if __name__ == "__main__":
         # with white color
         white = (255, 255, 255)
         screen.fill(white)
+
+        # Initializing Color
+        # color = (48, 141, 70)
+        
+        # Drawing Rectangle
+        # pygame.draw.rect(screen, color, pygame.Rect(Xscreen*5/7, Yscreen*2/2.7, 60, 60),  2, 3)
     
-        text_box(f'Choose a quesion:', Xscreen, Yscreen, screen)
-        display_textbox(screen, Xscreen, Yscreen)
-        add_characters(screen)
+        screen_frame = Q_frame(screen, Xscreen, Yscreen, 'Choose a question')
+        screen_frame.display('Did this organization hold a Baazar?',
+                              'Does this organization primarily promote Asian activities and cultures?')
 
         for event in pygame.event.get():
             if event.type == pygame.MOUSEBUTTONDOWN:
                 (mouseX, mouseY) = pygame.mouse.get_pos()
-                print(mouseX, mouseY)
             if event.type == pygame.QUIT:
                 running = False
                 

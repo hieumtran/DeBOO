@@ -10,12 +10,6 @@ class Q_frame():
         self.loctextY = loctextY
         self.content = content
 
-    def display_textbox(self):
-        text_bubble = pygame.image.load('./sprites/text_bubbles.png')
-        # Scale the image to your needed size
-        text_bubble = pygame.transform.scale_by(text_bubble, 0.2)
-        self.screen.blit(text_bubble, (self.loctextX*3/5*4/6, self.loctextY*1/3*3/6))
-
     def add_characters(self):
         character = pygame.image.load('./sprites/character/Ask_Me_2.jpg')
         # Scale the image to your needed size
@@ -35,7 +29,7 @@ class Q_frame():
         return ask_question_ID
 
     def display(self, question_1, question_2):
-        self.display_textbox()
+        display_bubble(self.screen, self.loctextX, self.loctextY)
         self.add_characters()  
 
         # Text with bubble Display

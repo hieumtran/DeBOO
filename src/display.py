@@ -6,6 +6,18 @@ import pandas as pd
 import random
 import time
 
+def waitFor(waitTime): # waitTime in milliseconds
+    screenCopy = screen.copy()
+    waitCount = 0
+    while waitCount < waitTime:
+        dt = clock.tick(60) # 60 is your FPS here
+        waitCount += dt
+        pygame.event.pump() # Tells pygame to handle it's event, instead of pygame.event.get()
+        screen.blit(screenCopy, (0,0))
+        pygame.display.flip()
+
+clock = pygame.time.Clock()
+
 # Init game resolution
 pygame.init()
 vresolution, hresolution = pygame.display.get_desktop_sizes()[0]
@@ -25,7 +37,7 @@ org = df['Organization']
 question = df.columns[4:].to_list()
 
 seed = 0
-frames = [0, 0, 1, 0, ]
+frames = [0, 1, 0, 0, ]
 '''
 0: Menu
 1: Question
@@ -35,26 +47,35 @@ frames = [0, 0, 1, 0, ]
 
 fquest_frame = Q_frame(screen, Xscreen, Yscreen, 'Choose a question')
 fresponse_frame = Response_frame(screen, Xscreen, Yscreen)
+frame_cnt = 100
+
+shuffle_question = True
+shuffle_response = True
+init_params = True
+
 while running:
     # White background color
     screen.fill((255, 255, 255))
 
-    curr_org = np.random.choice(org, size=1, replace=False)[0]
-    goal = df.loc[df['Organization'] == curr_org].iloc[:, 4:]
-    question = df.columns[4:].to_list()
-    game_question = df.columns[4:].to_list()
+    if init_params == True:
+        curr_org = np.random.choice(org, size=1, replace=False)[0]
+        goal = df.loc[df['Organization'] == curr_org].iloc[:, 4:]
+        question = df.columns[4:].to_list()
+        game_question = df.columns[4:].to_list()
+        init_params = False
 
     # May reshuffle the questions
-    random.seed(seed)
-    random.shuffle(game_question)
+    # random.seed(seed)
+    # np.random.seed(seed)
+    if shuffle_question == True:
+        random.shuffle(game_question)
+        shuffle_question = False
 
     curr_quest_1 = 0
     curr_quest_2 = 1
 
     # Question frame
     if frames[1] == 1:
-        
-
         interact_1, interact_2 = fquest_frame.display(
             read_question.loc[game_question[curr_quest_1], :].values[0],
             read_question.loc[game_question[curr_quest_2], :].values[0]
@@ -69,17 +90,26 @@ while running:
     # Thinking frame
     if frames[2] == 1:
         fresponse_frame.display_thinking('Hmmmm.....')
-        # pygame.time.wait(2000)
-        time.sleep(2)
-        frames[2], frames[3] = 0, 1
-        
+        frame_cnt -= 1
+        start_time = time.time()
+        if frame_cnt < 0:
+            screen.fill((255, 255, 255))
+            frames[2], frames[3] = 0, 1
+            frame_cnt = 100
+
     # Response frame
     if frames[3] == 1:
-        fresponse_frame.display_response(1)
-        # pygame.time.wait(2000)
-        time.sleep(2)
-        frames[3], frames[2] = 0, 1
-
+        if shuffle_response == True: 
+            content_ID = np.random.randint(5, size=1)[0]
+            shuffle_response = False
+        fresponse_frame.display_response(value, content_ID)
+        frame_cnt -= 1
+        if frame_cnt < 0:
+            screen.fill((255, 255, 255))
+            frames[3], frames[1] = 0, 1
+            frame_cnt = 100
+            shuffle_response = True
+        
     # Play action
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
@@ -90,12 +120,17 @@ while running:
                 mpos = pygame.mouse.get_pos()
                 if interact_1.collidepoint(mpos):
                     frames[1], frames[2] = 0, 1
+                    value = goal.loc[:, game_question[curr_quest_1]].values[0]
+                    game_question.remove(game_question[curr_quest_1])
+                    shuffle_question = True
                     # Change frame
                 if interact_2.collidepoint(mpos):
                     frames[1], frames[2] = 0, 1
+                    value = goal.loc[:, game_question[curr_quest_2]].values[0]
+                    game_question.remove(game_question[curr_quest_2])
+                    shuffle_question = True
                     # Change frame
-    
-            
+    print(curr_org)        
     # Draws the surface object to the screen.
     pygame.display.update()
 

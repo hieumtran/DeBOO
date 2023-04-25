@@ -7,12 +7,6 @@ class Response_frame():
         self.screen = screen
         self.loctextX = loctextX
         self.loctextY = loctextY
-    
-    def display_textbox(self):
-        text_bubble = pygame.image.load('./sprites/text_bubbles.png')
-        # Scale the image to your needed size
-        text_bubble = pygame.transform.scale_by(text_bubble, 0.2)
-        self.screen.blit(text_bubble, (self.loctextX*3/5*4/6, self.loctextY*1/3*3/6))
 
     def add_character_thinking(self):
         character = pygame.image.load('./sprites/character/Thinking.png')
@@ -25,7 +19,7 @@ class Response_frame():
         self.screen.blit(character, loc) 
 
     def display_thinking(self, content):
-        self.display_textbox()
+        display_bubble(self.screen, self.loctextX, self.loctextY)
         self.add_character_thinking()
 
         text, textRect = text_box(
@@ -36,9 +30,9 @@ class Response_frame():
         )
         self.screen.blit(text, textRect) 
 
-    def display_response(self, value):
+    def display_response(self, value, content_ID):
         path = './sprites/character/'
-        content_ID = np.random.randint(5, size=1)[0]
+        
         yes_content = [
             'Yes, absolutely', 
             'Yup!', 
@@ -72,7 +66,7 @@ class Response_frame():
             if content_ID == 3: self.add_character(f'{path}Yes_3.png', 0.8, (70, 250)) # Done
             if content_ID == 4: self.add_character(f'{path}Yes_4.png', 0.6, (100, 300)) # Done
 
-        self.display_textbox()
+        display_bubble(self.screen, self.loctextX, self.loctextY)
         text, textRect = text_box(
             content, 
             25,

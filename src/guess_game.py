@@ -28,10 +28,16 @@ def sample_questions(game_question, read_question):
         raise 'No more question.'
         
 def response(value):
-    correct_answer = ['Yes, absolutely', 'Yup!', 'Yes, good question!',
-                      'I think so', 'I guess so']
-    incorrect_answer = ['No, nahhh!', 'Nope!', 'No, try another one!',
-                        "I don't think so", 'I guess not']
+    correct_answer = ['Yes, absolutely', 
+                      'Yup!', 
+                      'Yes, good question!',
+                      'I think so', 
+                      'I guess so']
+    incorrect_answer = ['No, nahhh!', 
+                        'Nope!', 
+                        'No, try another one!',
+                        "I don't think so", 
+                        'I guess not']
     if value == 1:
         ans = np.random.choice(correct_answer, size=1, replace=False)[0]
     elif value == 0:

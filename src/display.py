@@ -1,7 +1,7 @@
 import pygame
 from guess_game import *
-from question_frame import *
-from response_frame import *
+from fgame.question_frame import *
+from fgame.response_frame import *
 import pandas as pd
 import random
 import time
@@ -52,6 +52,7 @@ frame_cnt = 100
 shuffle_question = True
 shuffle_response = True
 init_params = True
+del_question = False
 
 while running:
     # White background color
@@ -116,20 +117,27 @@ while running:
             running = False
         if event.type == pygame.MOUSEBUTTONDOWN:
             # Question frame
-            if pygame.mouse.get_pressed()[0]:
+            if pygame.mouse.get_pressed()[0] and interact_1 != None and interact_2 != None:
                 mpos = pygame.mouse.get_pos()
                 if interact_1.collidepoint(mpos):
                     frames[1], frames[2] = 0, 1
                     value = goal.loc[:, game_question[curr_quest_1]].values[0]
                     game_question.remove(game_question[curr_quest_1])
                     shuffle_question = True
-                    # Change frame
+                    del_question = True
+
                 if interact_2.collidepoint(mpos):
                     frames[1], frames[2] = 0, 1
                     value = goal.loc[:, game_question[curr_quest_2]].values[0]
                     game_question.remove(game_question[curr_quest_2])
                     shuffle_question = True
-                    # Change frame
+                    del_question = True
+                
+                if del_question:
+                    interact_1 = None
+                    interact_2 = None
+                    del_question = False
+
     print(curr_org)        
     # Draws the surface object to the screen.
     pygame.display.update()

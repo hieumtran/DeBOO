@@ -7,19 +7,6 @@ from fgame.question_frame import *
 from fgame.response_frame import *
 from fgame.answer_frame import *
 
-
-def waitFor(waitTime): # waitTime in milliseconds
-    screenCopy = screen.copy()
-    waitCount = 0
-    while waitCount < waitTime:
-        dt = clock.tick(60) # 60 is your FPS here
-        waitCount += dt
-        pygame.event.pump() # Tells pygame to handle it's event, instead of pygame.event.get()
-        screen.blit(screenCopy, (0,0))
-        pygame.display.flip()
-
-clock = pygame.time.Clock()
-
 # Init game resolution
 pygame.init()
 vresolution, hresolution = pygame.display.get_desktop_sizes()[0]
@@ -34,42 +21,57 @@ df = pd.read_csv('./data/Q_CDI.csv')
 read_question = pd.read_csv('./data/Q_ID.csv')
 read_question = read_question.set_index('ID')
 
-org = df['Organization'].to_list()
 
-question = df.columns[4:].to_list()
 
 seed = 0
-frames = [0, 1, 0, 0, 0]
+frames = [0, 1, 0, 0, 0, 0]
 '''
 0: Menu
 1: Question
 2: Thinking
 3: Response
 4: Answer
+5: Info
 '''
 
 fquest_frame = Q_frame(screen, Xscreen, Yscreen, 'Choose a question')
 fresponse_frame = Response_frame(screen, Xscreen, Yscreen)
-fanswer_frame = Answer_frame(screen)
+fanswer_frame = Answer_frame(screen, Xscreen, Yscreen)
+
 frame_cnt_thinking = 50
 frame_cnt_response = 50
+frame_cnt_answer = 500
 
 shuffle_question = True
 shuffle_response = True
 init_params = True
 del_question = False
+answer_click_state = False
+
+interact_1, interact_2, interact_3 = None, None, None
 
 while running:
     # White background color
     screen.fill((255, 255, 255))
 
     if init_params == True:
+        # Init Org choice and answer
+        org = df['Organization'].to_list()
         curr_org = np.random.choice(org, size=1, replace=False)[0]
+        org.remove(curr_org)
+        other_choice = np.random.choice(org, size=2, replace=False)
+        answer_list = [curr_org, other_choice[0], other_choice[1]]
+        random.shuffle(answer_list) 
+        correct_index = answer_list.index(curr_org)
+
+        # Goal
         goal = df.loc[df['Organization'] == curr_org].iloc[:, 4:]
+        
+        # Question
         question = df.columns[4:].to_list()
         game_question = df.columns[4:].to_list()
         init_params = False
-
+        
     # May reshuffle the questions
     if shuffle_question == True:
         random.shuffle(game_question)
@@ -93,6 +95,14 @@ while running:
             (0, 0, 0)
         )
         screen.blit(atext, atextRect)
+        # Colorful Animation
+        mpos = pygame.mouse.get_pos()
+        if interact_1.collidepoint(mpos): pygame.draw.rect(screen, (239, 62, 91), interact_1, 3, 10)
+        if interact_2.collidepoint(mpos): pygame.draw.rect(screen, (239, 62, 91), interact_2, 3, 10)
+        if atextRect.collidepoint(mpos):
+            font = pygame.font.SysFont('ALGERIAN', size=48)
+            atext = font.render('ANSWER', 1, (239, 62, 91))
+            screen.blit(atext, atextRect)
             
     # Thinking frame
     if frames[2] == 1:
@@ -118,16 +128,30 @@ while running:
     
     # Answer frame
     if frames[4] == 1:
-        fanswer_frame.display_answer(curr_org, org)
-    
-    # Colorful Animation
-    mpos = pygame.mouse.get_pos()
-    if interact_1.collidepoint(mpos): pygame.draw.rect(screen, (239, 62, 91), interact_1, 3, 10)
-    if interact_2.collidepoint(mpos): pygame.draw.rect(screen, (239, 62, 91), interact_2, 3, 10)
-    if atextRect.collidepoint(mpos):
-        font = pygame.font.SysFont('ALGERIAN', size=48)
-        atext = font.render('ANSWER', 1, (239, 62, 91))
+        interact_1, interact_2, interact_3 = fanswer_frame.display_answer(answer_list)
+        atext, atextRect = text_box(
+            'ALGERIAN',
+            'Choose an answer below',
+            48,
+            Xscreen//2+30,
+            Yscreen//2-250,
+            (0, 0, 0)
+        )
         screen.blit(atext, atextRect)
+        mpos = pygame.mouse.get_pos()
+        if interact_1.collidepoint(mpos): pygame.draw.rect(screen, (239, 62, 91), interact_1, 3, 10)
+        if interact_2.collidepoint(mpos): pygame.draw.rect(screen, (239, 62, 91), interact_2, 3, 10)
+        if interact_3.collidepoint(mpos): pygame.draw.rect(screen, (239, 62, 91), interact_3, 3, 10)
+
+        if answer_click_state:
+            fanswer_frame.discriminator(correct_index, interact_1, interact_2, interact_3)
+            print(curr_org)
+            frame_cnt_answer -= 1
+            if frame_cnt_answer < 0:
+                frame_cnt_answer = 500
+                answer_click_state = False
+
+
 
     # Play action
     for event in pygame.event.get():
@@ -135,7 +159,8 @@ while running:
             running = False
         if event.type == pygame.MOUSEBUTTONDOWN:
             # Question frame
-            if pygame.mouse.get_pressed()[0] and interact_1 != None and interact_2 != None:
+            if pygame.mouse.get_pressed()[0] and (interact_1 != None) \
+                and (interact_2 != None) and (frames[1] == 1):
                 mpos = pygame.mouse.get_pos()
                 if interact_1.collidepoint(mpos):
                     frames[1], frames[2] = 0, 1
@@ -153,12 +178,18 @@ while running:
                     
                 if atextRect.collidepoint(mpos):
                     del_question = True
-                    frames[4] = 1
+                    frames[4], frames[1] = 1, 0
                 
                 if del_question:
                     interact_1 = None
                     interact_2 = None
                     del_question = False
+
+            # Answer frame
+            if pygame.mouse.get_pressed()[0] and (interact_1 != None) \
+                and (interact_2 != None) and (interact_3 != None) and (frames[4] == 1):
+                mpos = pygame.mouse.get_pos()
+                answer_click_state = True
 
     # print(curr_org)        
     # Draws the surface object to the screen.

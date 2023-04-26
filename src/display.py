@@ -6,6 +6,7 @@ from guess_game import *
 from fgame.question_frame import *
 from fgame.response_frame import *
 from fgame.answer_frame import *
+from fgame.info_frame import *
 
 # Init game resolution
 pygame.init()
@@ -21,10 +22,8 @@ df = pd.read_csv('./data/Q_CDI.csv')
 read_question = pd.read_csv('./data/Q_ID.csv')
 read_question = read_question.set_index('ID')
 
-
-
 seed = 0
-frames = [0, 1, 0, 0, 0, 0]
+frames = [0, 0, 0, 0, 0, 1]
 '''
 0: Menu
 1: Question
@@ -37,6 +36,7 @@ frames = [0, 1, 0, 0, 0, 0]
 fquest_frame = Q_frame(screen, Xscreen, Yscreen, 'Choose a question')
 fresponse_frame = Response_frame(screen, Xscreen, Yscreen)
 fanswer_frame = Answer_frame(screen, Xscreen, Yscreen)
+finfo_frame = Info_frame(screen, Xscreen, Yscreen)
 
 frame_cnt_thinking = 50
 frame_cnt_response = 50
@@ -49,7 +49,6 @@ del_question = False
 answer_click_state = False
 
 interact_1, interact_2, interact_3 = None, None, None
-num_quest = 0
 
 while running:
     # White background color
@@ -112,7 +111,7 @@ while running:
         if frame_cnt_thinking < 0:
             screen.fill((255, 255, 255))
             frames[2], frames[3] = 0, 1
-            frame_cnt_thinking = 75
+            frame_cnt_thinking = random.randint(30, 50)
 
     # Response frame
     if frames[3] == 1:
@@ -124,7 +123,7 @@ while running:
         if frame_cnt_response < 0:
             screen.fill((255, 255, 255))
             frames[3], frames[1] = 0, 1
-            frame_cnt_response = 75
+            frame_cnt_response = 100
             shuffle_response = True
     
     # Answer frame
@@ -146,11 +145,17 @@ while running:
 
         if answer_click_state:
             fanswer_frame.discriminator(correct_index, interact_1, interact_2, interact_3)
-            print(curr_org)
             frame_cnt_answer -= 1
             if frame_cnt_answer < 0:
-                frame_cnt_answer = 500
+                frame_cnt_answer = 200
                 answer_click_state = False
+                screen.fill((255, 255, 255))
+                frames[4], frames[5] = 0, 1
+    
+    # Information frame
+    if frames[5] == 1:
+        finfo_frame.display_info(df, curr_org)
+        
 
                 
     # Play action
@@ -168,7 +173,6 @@ while running:
                     game_question.remove(game_question[curr_quest_1])
                     shuffle_question = True
                     del_question = True
-                    num_question += 1
 
                 if interact_2.collidepoint(mpos):
                     frames[1], frames[2] = 0, 1
@@ -176,7 +180,6 @@ while running:
                     game_question.remove(game_question[curr_quest_2])
                     shuffle_question = True
                     del_question = True
-                    num_question += 1
                     
                 if atextRect.collidepoint(mpos):
                     del_question = True

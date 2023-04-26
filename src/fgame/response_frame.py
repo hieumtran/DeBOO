@@ -21,7 +21,6 @@ class Response_frame():
     def display_thinking(self, content):
         display_bubble(self.screen, self.loctextX, self.loctextY)
         self.add_character_thinking()
-
         text, textRect = text_box(
             content, 
             25,
@@ -68,10 +67,12 @@ class Response_frame():
 
         display_bubble(self.screen, self.loctextX, self.loctextY)
         text, textRect = text_box(
+            'Comicsansms',
             content, 
             25,
             self.loctextX*3/5, 
-            self.loctextY*1/2.7
+            self.loctextY*1/2.7,
+            (0,0,0)
         )
         self.screen.blit(text, textRect) 
 

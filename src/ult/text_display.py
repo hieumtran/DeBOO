@@ -1,9 +1,9 @@
 import pygame
 
-def text_box(content, size, loctextX, loctextY):
+def text_box(font, content, size, loctextX, loctextY, color):
     # font = pygame.font.Font('freesansbold.ttf', size)
-    font = pygame.font.SysFont('Comicsansms', size)
-    text = font.render(content, 1, (0, 0, 0))
+    font = pygame.font.SysFont(font, size)
+    text = font.render(content, 1, color)
 
     # text surface object
     textRect = text.get_rect()
@@ -17,3 +17,4 @@ def display_bubble(screen, loctextX, loctextY):
     # Scale the image to your needed size
     text_bubble = pygame.transform.scale_by(text_bubble, 0.2)
     screen.blit(text_bubble, (loctextX*3/5*4/6, loctextY*1/3*3/6))
+    

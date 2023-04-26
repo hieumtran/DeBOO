@@ -1,10 +1,12 @@
 import pygame
+import pandas as pd
+import random
+
 from guess_game import *
 from fgame.question_frame import *
 from fgame.response_frame import *
-import pandas as pd
-import random
-import time
+from fgame.answer_frame import *
+
 
 def waitFor(waitTime): # waitTime in milliseconds
     screenCopy = screen.copy()
@@ -32,21 +34,23 @@ df = pd.read_csv('./data/Q_CDI.csv')
 read_question = pd.read_csv('./data/Q_ID.csv')
 read_question = read_question.set_index('ID')
 
-org = df['Organization']
+org = df['Organization'].to_list()
 
 question = df.columns[4:].to_list()
 
 seed = 0
-frames = [0, 1, 0, 0, ]
+frames = [0, 1, 0, 0, 0]
 '''
 0: Menu
 1: Question
 2: Thinking
 3: Response
+4: Answer
 '''
 
 fquest_frame = Q_frame(screen, Xscreen, Yscreen, 'Choose a question')
 fresponse_frame = Response_frame(screen, Xscreen, Yscreen)
+fanswer_frame = Answer_frame(screen)
 frame_cnt_thinking = 50
 frame_cnt_response = 50
 
@@ -67,8 +71,6 @@ while running:
         init_params = False
 
     # May reshuffle the questions
-    # random.seed(seed)
-    # np.random.seed(seed)
     if shuffle_question == True:
         random.shuffle(game_question)
         shuffle_question = False
@@ -82,14 +84,16 @@ while running:
             read_question.loc[game_question[curr_quest_1], :].values[0],
             read_question.loc[game_question[curr_quest_2], :].values[0]
         )
-
-        mpos = pygame.mouse.get_pos() # Get mouse position
-        if interact_1.collidepoint(mpos):
-            pygame.draw.rect(screen, (255, 0, 0), interact_1, 3, 10)
-        if interact_2.collidepoint(mpos):
-            pygame.draw.rect(screen, (255, 0, 0), interact_2, 3, 10)
-        
-        
+        atext, atextRect = text_box(
+            'ALGERIAN',
+            'ANSWER',
+            48,
+            Xscreen*6.2/7,
+            Yscreen/15,
+            (0, 0, 0)
+        )
+        screen.blit(atext, atextRect)
+            
     # Thinking frame
     if frames[2] == 1:
         fresponse_frame.display_thinking('Hmmmm.....')
@@ -111,7 +115,20 @@ while running:
             frames[3], frames[1] = 0, 1
             frame_cnt_response = 75
             shuffle_response = True
-        
+    
+    # Answer frame
+    if frames[4] == 1:
+        fanswer_frame.display_answer(curr_org, org)
+    
+    # Colorful Animation
+    mpos = pygame.mouse.get_pos()
+    if interact_1.collidepoint(mpos): pygame.draw.rect(screen, (239, 62, 91), interact_1, 3, 10)
+    if interact_2.collidepoint(mpos): pygame.draw.rect(screen, (239, 62, 91), interact_2, 3, 10)
+    if atextRect.collidepoint(mpos):
+        font = pygame.font.SysFont('ALGERIAN', size=48)
+        atext = font.render('ANSWER', 1, (239, 62, 91))
+        screen.blit(atext, atextRect)
+
     # Play action
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
@@ -133,6 +150,10 @@ while running:
                     game_question.remove(game_question[curr_quest_2])
                     shuffle_question = True
                     del_question = True
+                    
+                if atextRect.collidepoint(mpos):
+                    del_question = True
+                    frames[4] = 1
                 
                 if del_question:
                     interact_1 = None

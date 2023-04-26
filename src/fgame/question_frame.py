@@ -31,33 +31,38 @@ class Q_frame():
     def display(self, question_1, question_2):
         display_bubble(self.screen, self.loctextX, self.loctextY)
         self.add_characters()  
-
+        text_color = (0,0,0)
         # Text with bubble Display
         text_conv, textRect_conv = text_box(
+            'Comicsansms',
             self.content, 
             25,
             self.loctextX*3/5, 
-            self.loctextY*1/2.7
+            self.loctextY*1/2.7,
+            text_color
         )
         self.screen.blit(text_conv, textRect_conv)
         
         # Text with Rect Display
         text_1, textRect_1 = text_box(
+            'Comicsansms',
             question_1,
             16,
             self.loctextX*5/7, 
-            self.loctextY*2/2.7
+            self.loctextY*2/2.7,
+            text_color
         )
         self.screen.blit(text_1, textRect_1)
         textRect_interact_1 = self.display_questionbox(textRect_1)
 
         text_2, textRect_2 = text_box(
+            'Comicsansms',
             question_2,
             16,
             self.loctextX*5/7, 
-            self.loctextY*2.3/2.7
+            self.loctextY*2.3/2.7,
+            text_color
         )
         self.screen.blit(text_2, textRect_2)
         textRect_interact_2 = self.display_questionbox(textRect_2)
-        
         return textRect_interact_1, textRect_interact_2

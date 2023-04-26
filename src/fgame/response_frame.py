@@ -1,5 +1,5 @@
 import pygame
-from text_display import *
+from ult.text_display import *
 import numpy as np
 
 class Response_frame():

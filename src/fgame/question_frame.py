@@ -1,5 +1,5 @@
 import pygame
-from text_display import *
+from ult.text_display import *
 import numpy as np
 
 
@@ -59,4 +59,5 @@ class Q_frame():
         )
         self.screen.blit(text_2, textRect_2)
         textRect_interact_2 = self.display_questionbox(textRect_2)
+        
         return textRect_interact_1, textRect_interact_2

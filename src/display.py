@@ -89,6 +89,7 @@ while running:
         if interact_2.collidepoint(mpos):
             pygame.draw.rect(screen, (255, 0, 0), interact_2, 3, 10)
         
+        
     # Thinking frame
     if frames[2] == 1:
         fresponse_frame.display_thinking('Hmmmm.....')

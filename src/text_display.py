@@ -1,7 +1,8 @@
 import pygame
 
 def text_box(content, size, loctextX, loctextY):
-    font = pygame.font.Font('freesansbold.ttf', size)
+    # font = pygame.font.Font('freesansbold.ttf', size)
+    font = pygame.font.SysFont('Comicsansms', size)
     text = font.render(content, 1, (0, 0, 0))
 
     # text surface object

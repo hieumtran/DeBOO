@@ -47,7 +47,8 @@ frames = [0, 1, 0, 0, ]
 
 fquest_frame = Q_frame(screen, Xscreen, Yscreen, 'Choose a question')
 fresponse_frame = Response_frame(screen, Xscreen, Yscreen)
-frame_cnt = 100
+frame_cnt_thinking = 50
+frame_cnt_response = 50
 
 shuffle_question = True
 shuffle_response = True
@@ -91,12 +92,11 @@ while running:
     # Thinking frame
     if frames[2] == 1:
         fresponse_frame.display_thinking('Hmmmm.....')
-        frame_cnt -= 1
-        start_time = time.time()
-        if frame_cnt < 0:
+        frame_cnt_thinking -= 1
+        if frame_cnt_thinking < 0:
             screen.fill((255, 255, 255))
             frames[2], frames[3] = 0, 1
-            frame_cnt = 100
+            frame_cnt_thinking = 75
 
     # Response frame
     if frames[3] == 1:
@@ -104,11 +104,11 @@ while running:
             content_ID = np.random.randint(5, size=1)[0]
             shuffle_response = False
         fresponse_frame.display_response(value, content_ID)
-        frame_cnt -= 1
-        if frame_cnt < 0:
+        frame_cnt_response -= 1
+        if frame_cnt_response < 0:
             screen.fill((255, 255, 255))
             frames[3], frames[1] = 0, 1
-            frame_cnt = 100
+            frame_cnt_response = 75
             shuffle_response = True
         
     # Play action
@@ -138,7 +138,7 @@ while running:
                     interact_2 = None
                     del_question = False
 
-    print(curr_org)        
+    # print(curr_org)        
     # Draws the surface object to the screen.
     pygame.display.update()
 

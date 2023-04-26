@@ -51,7 +51,7 @@ class Response_frame():
         # No
         if value == 0:
             content = no_content[content_ID]
-            if content_ID == 0: self.add_character(f'{path}No_0.png', 0.2, (100, 250)) # Done
+            if content_ID == 0: self.add_character(f'{path}No_0.png', 0.4, (30, 320)) # Done
             if content_ID == 1: self.add_character(f'{path}No_1.png', 0.18, (100, 290)) # Done
             if content_ID == 2: self.add_character(f'{path}No_2.png', 0.7, (100, 290)) # Done
             if content_ID == 3: self.add_character(f'{path}No_3.png', 0.45, (40, 280)) # Done

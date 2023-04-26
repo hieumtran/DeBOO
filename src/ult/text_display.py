@@ -1,7 +1,6 @@
 import pygame
 
 def text_box(font, content, size, loctextX, loctextY, color):
-    # font = pygame.font.Font('freesansbold.ttf', size)
     font = pygame.font.SysFont(font, size)
     text = font.render(content, 1, color)
 

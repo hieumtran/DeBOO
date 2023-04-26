@@ -7,7 +7,7 @@ def text_box(content, size, loctextX, loctextY):
 
     # text surface object
     textRect = text.get_rect()
-    # print(vars(textRect))
+    
     # set the center of the rectangular object.
     textRect.center = (loctextX, loctextY)
     return text, textRect

@@ -53,8 +53,12 @@ class Q_frame():
             text_color
         )
         self.screen.blit(text_1, textRect_1)
-        textRect_interact_1 = self.display_questionbox(textRect_1)
-
+        textRect_interact_1 = display_animationbox(
+            self.screen,
+            textRect_1,
+            30, 30, 570, 50
+        )
+        
         text_2, textRect_2 = text_box(
             'Comicsansms',
             question_2,
@@ -64,5 +68,9 @@ class Q_frame():
             text_color
         )
         self.screen.blit(text_2, textRect_2)
-        textRect_interact_2 = self.display_questionbox(textRect_2)
+        textRect_interact_2 = display_animationbox(
+            self.screen,
+            textRect_2,
+            30, 30, 570, 50
+        )
         return textRect_interact_1, textRect_interact_2

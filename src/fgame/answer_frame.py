@@ -8,12 +8,6 @@ class Answer_frame():
         self.screen = screen
         self.loctextX = loctextX
         self.loctextY = loctextY
-    
-    def display_answerbox(self, textRect):
-        fixed_textRect = pygame.Rect(30, 50, 1000, 100)
-        fixed_textRect.center = textRect.center
-        pygame.draw.rect(self.screen, (0,0,0), fixed_textRect, 3, 10)
-        return fixed_textRect
 
     def display_answer(self, answer_list):
         text_color = (0,0,0)
@@ -26,7 +20,12 @@ class Answer_frame():
             text_color
         )
         self.screen.blit(text_1, textRect_1)
-        textRect_interact_1 = self.display_answerbox(textRect_1)
+        # textRect_interact_1 = self.display_answerbox(textRect_1)
+        textRect_interact_1 = display_animationbox(
+            self.screen,
+            textRect_1,
+            30, 50, 1000, 100
+        )
         
         text_2, textRect_2 = text_box(
             'Comicsansms',
@@ -37,7 +36,11 @@ class Answer_frame():
             text_color
         )
         self.screen.blit(text_2, textRect_2)
-        textRect_interact_2 = self.display_answerbox(textRect_2)
+        textRect_interact_2 = display_animationbox(
+            self.screen,
+            textRect_2,
+            30, 50, 1000, 100
+        )
 
         text_3, textRect_3 = text_box(
             'Comicsansms',
@@ -48,7 +51,11 @@ class Answer_frame():
             text_color
         )
         self.screen.blit(text_3, textRect_3)
-        textRect_interact_3 = self.display_answerbox(textRect_3)
+        textRect_interact_3 = display_animationbox(
+            self.screen,
+            textRect_3,
+            30, 50, 1000, 100
+        )
         return textRect_interact_1, textRect_interact_2, textRect_interact_3
 
     def discriminator(self, correct_index, interact_1, interact_2, interact_3):

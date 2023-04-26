@@ -49,6 +49,7 @@ del_question = False
 answer_click_state = False
 
 interact_1, interact_2, interact_3 = None, None, None
+num_quest = 0
 
 while running:
     # White background color
@@ -151,8 +152,7 @@ while running:
                 frame_cnt_answer = 500
                 answer_click_state = False
 
-
-
+                
     # Play action
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
@@ -168,6 +168,7 @@ while running:
                     game_question.remove(game_question[curr_quest_1])
                     shuffle_question = True
                     del_question = True
+                    num_question += 1
 
                 if interact_2.collidepoint(mpos):
                     frames[1], frames[2] = 0, 1
@@ -175,6 +176,7 @@ while running:
                     game_question.remove(game_question[curr_quest_2])
                     shuffle_question = True
                     del_question = True
+                    num_question += 1
                     
                 if atextRect.collidepoint(mpos):
                     del_question = True

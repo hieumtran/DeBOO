@@ -1,4 +1,5 @@
 import pygame
+from ult.text_display import *
 
 class Info_frame():
     def __init__(self, screen, loctextX, loctextY):
@@ -45,7 +46,7 @@ class Info_frame():
         return text
 
     def display_info(self, df, curr_org):
-        curr_org = "Minority Association of Pre-Medication Students"
+        curr_org = 'Association of Asian, Pacific Islander, and Desi American'
         display_org = df.loc[df['Organization'] == curr_org, :]
 
         fixed_textRect = pygame.Rect(30, 50, 1000, 500)
@@ -72,7 +73,12 @@ class Info_frame():
             para_y += line_spacing
             self.screen.blit(text, textRect)
         
-
-        
-
-        
+        OrgTitle, OrgTitle_Rect = text_box(
+            'Impact',
+            curr_org,
+            28,
+            self.loctextX//2,
+            self.loctextY//2-210,
+            (252, 165, 16)
+        )
+        self.screen.blit(OrgTitle, OrgTitle_Rect)

@@ -12,7 +12,8 @@ from ult.buttons import *
 # Init game resolution
 pygame.init()
 vresolution, hresolution = pygame.display.get_desktop_sizes()[0]
-Xscreen, Yscreen = vresolution*4/5, hresolution*4/5
+# Xscreen, Yscreen = vresolution*4/5, hresolution*4/5
+Xscreen, Yscreen = 1024.0, 640.0
 screen = pygame.display.set_mode((Xscreen, Yscreen))
 
 # Running condition

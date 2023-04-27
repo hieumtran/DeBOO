@@ -15,5 +15,13 @@ def display_arrow(Xscreen, Yscreen):
     arrow = pygame.transform.scale_by(arrow, 0.07)
     arrow_rect = arrow.get_rect()
     
-    arrow_rect.center = (Xscreen//2-470, Yscreen//2-280)
+    arrow_rect.center = (Xscreen//2-470, Yscreen//2+280)
     return arrow, arrow_rect
+
+def display_home(Xscreen, Yscreen):
+    home = pygame.image.load('./sprites/Extras/Home.png').convert_alpha()
+    home = pygame.transform.scale_by(home, 0.15)
+    home_rect = home.get_rect()
+
+    home_rect.center = (Xscreen//2+470, Yscreen//2+280)
+    return home, home_rect

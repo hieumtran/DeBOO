@@ -126,9 +126,15 @@ while running:
         
         arrow, arrow_rect = display_arrow(Xscreen, Yscreen)
         screen.blit(arrow, arrow_rect)
+        home, home_rect = display_home(Xscreen, Yscreen)
+        screen.blit(home, home_rect)
         if arrow_rect.collidepoint(mpos):
             fill(arrow, pygame.Color(255, 0, 0))
             screen.blit(arrow, arrow_rect)
+
+        if home_rect.collidepoint(mpos):
+            fill(home, pygame.Color(255, 0, 0))
+            screen.blit(home, home_rect)
         if (interact_1 != None) and (interact_2 != None):
             if interact_1.collidepoint(mpos): pygame.draw.rect(screen, (239, 62, 91), interact_1, 3, 10)
             if interact_2.collidepoint(mpos): pygame.draw.rect(screen, (239, 62, 91), interact_2, 3, 10)
@@ -202,6 +208,12 @@ while running:
             if arrow_rect.collidepoint(mpos):
                 fill(arrow, pygame.Color(255, 0, 0))
                 screen.blit(arrow, arrow_rect)
+            
+            home, home_rect = display_home(Xscreen, Yscreen)
+            screen.blit(home, home_rect)
+            if home_rect.collidepoint(mpos):
+                fill(home, pygame.Color(255, 0, 0))
+                screen.blit(home, home_rect)
                 
     # Play action
     for event in pygame.event.get():

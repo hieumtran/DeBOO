@@ -11,9 +11,15 @@ class Q_frame():
         self.content = content
 
     def add_characters(self):
-        character = pygame.image.load('./sprites/character/Ask_Me_2.jpg')
+        character = pygame.image.load('./sprites/character/Ask_Me.jpg')
         # Scale the image to your needed size
         character = pygame.transform.scale_by(character, 0.63)
+        self.screen.blit(character, (100, 300)) 
+    
+    def add_characters_NMQ(self):
+        character = pygame.image.load('./sprites/character/NMQ.png')
+        # Scale the image to your needed size
+        character = pygame.transform.scale_by(character, 0.22)
         self.screen.blit(character, (100, 300)) 
     
     def display_questionbox(self, textRect):
@@ -74,3 +80,18 @@ class Q_frame():
             30, 30, 570, 50
         )
         return textRect_interact_1, textRect_interact_2
+
+    def display_NMQ(self):
+        display_bubble(self.screen, self.loctextX, self.loctextY)
+        self.add_characters_NMQ()  
+        text_color = (0,0,0)
+        # Text with bubble Display
+        text_conv, textRect_conv = text_box(
+            'Comicsansms',
+            'No more question!!!!', 
+            25,
+            self.loctextX*3/5, 
+            self.loctextY*1/2.7,
+            text_color
+        )
+        self.screen.blit(text_conv, textRect_conv)

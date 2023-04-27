@@ -6,49 +6,20 @@ class Info_frame():
         self.screen = screen
         self.loctextX = loctextX
         self.loctextY = loctextY
-    
-    def drawText(self, text, color, rect, font, aa=False, bkg=None):
-        # rect = pygame.Rect(rect)
-        y = rect.top
-        lineSpacing = -2
 
-        # get the height of the font
-        fontHeight = font.size("Tg")[1]
-
-        while text:
-            i = 1
-
-            # determine if the row of text will be outside our area
-            if y + fontHeight > rect.bottom:
-                break
-
-            # determine maximum width of line
-            while font.size(text[:i])[0] < rect.width and i > len(text):
-                i += 1
-
-            # if we've wrapped the text, then adjust the wrap to the last word      
-            if i < len(text): 
-                i = text.rfind(" ", 0, i) + 1
-
-            # render the line and blit it to the surface
-            if bkg:
-                image = font.render(text[:i], 1, color, bkg)
-                image.set_colorkey(bkg)
-            else:
-                image = font.render(text[:i], aa, color)
-
-            self.screen.blit(image, (rect.left, y))
-            y += fontHeight + lineSpacing
-
-            # remove the text we just blitted
-            text = text[i:]
-
-        return text
+    def blit_icon(self, filename, scale, alpha, locX, locY):
+        icon = pygame.image.load(f"./sprites/icon/{filename}")
+        icon.set_alpha(alpha)
+        icon = pygame.transform.scale_by(icon, scale)
+        icon_rect = icon.get_rect()
+        icon_rect.center = (locX, locY)
+        self.screen.blit(icon, icon_rect) 
 
     def display_info(self, df, curr_org):
-        curr_org = 'Association of Asian, Pacific Islander, and Desi American'
         display_org = df.loc[df['Organization'] == curr_org, :]
 
+        # Display icon
+        self.fdisplay_icon(curr_org, display_org)
         fixed_textRect = pygame.Rect(30, 50, 1000, 500)
         fixed_textRect.center = (self.loctextX//2, self.loctextY//2)
         pygame.draw.rect(self.screen, (0,0,0), fixed_textRect, 3, 10)
@@ -82,3 +53,140 @@ class Info_frame():
             (252, 165, 16)
         )
         self.screen.blit(OrgTitle, OrgTitle_Rect)
+
+    def fdisplay_icon(self, curr_org, display_org):
+        # Display background image
+        if curr_org == "African Students' Association": 
+            self.blit_icon(
+                display_org.loc[:, 'Image'].values[0], 
+                0.3, 255,
+                self.loctextX//2, self.loctextY//2
+            )
+        if curr_org == "Association of African-American Students": 
+            self.blit_icon(
+                display_org.loc[:, 'Image'].values[0], 
+                0.5, 255,
+                self.loctextX//2, self.loctextY//2+100
+            )
+        if curr_org == "Caribbean Student Association":
+            self.blit_icon(
+                display_org.loc[:, 'Image'].values[0], 
+                0.5, 255,
+                self.loctextX//2, self.loctextY//2+100
+            )
+        if curr_org == "Committee for Latinx Concerns":
+            self.blit_icon(
+                display_org.loc[:, 'Image'].values[0], 
+                0.1, 255,
+                self.loctextX//2, self.loctextY//2+100
+            )
+        if curr_org == "Computing Opportunities for Students of Color":
+            self.blit_icon(
+                display_org.loc[:, 'Image'].values[0], 
+                0.3, 255,
+                self.loctextX//2, self.loctextY//2+100
+            )
+        if curr_org == "DePauw China Connection":
+            self.blit_icon(
+                display_org.loc[:, 'Image'].values[0], 
+                0.3, 255,
+                self.loctextX//2, self.loctextY//2+100
+            )
+        if curr_org == "DePauw International Student Association":
+            self.blit_icon(
+                display_org.loc[:, 'Image'].values[0], 
+                0.3, 255,
+                self.loctextX//2, self.loctextY//2+100
+            )
+        if curr_org == "Elite Precizion":
+            self.blit_icon(
+                display_org.loc[:, 'Image'].values[0], 
+                0.1, 125,
+                self.loctextX//2, self.loctextY//2
+            )     
+        if curr_org == "Exalt! Gospel Choir":
+            self.blit_icon(
+                display_org.loc[:, 'Image'].values[0], 
+                0.3, 255,
+                self.loctextX//2, self.loctextY//2
+            )     
+        if curr_org == "Feminista!":
+            self.blit_icon(
+                display_org.loc[:, 'Image'].values[0], 
+                0.3, 255,
+                self.loctextX//2, self.loctextY//2+70
+            )     
+        if curr_org == "House of Opulence":
+            self.blit_icon(
+                display_org.loc[:, 'Image'].values[0], 
+                0.5, 255,
+                self.loctextX//2, self.loctextY//2+100
+            )  
+        if curr_org == "Japanese Club":
+            self.blit_icon(
+                display_org.loc[:, 'Image'].values[0], 
+                0.3, 255,
+                self.loctextX//2, self.loctextY//2+100
+            )    
+        if curr_org == "La Fuerza Latina Latin Dance Group":
+            self.blit_icon(
+                display_org.loc[:, 'Image'].values[0], 
+                0.2, 125,
+                self.loctextX//2, self.loctextY//2
+            )    
+        if curr_org == "Native American & Indigenous People Association":
+            self.blit_icon(
+                display_org.loc[:, 'Image'].values[0], 
+                0.4, 255,
+                self.loctextX//2, self.loctextY//2+100
+            )    
+        if curr_org == "Students of Color in STEM":
+            self.blit_icon(
+                display_org.loc[:, 'Image'].values[0], 
+                0.3, 255,
+                self.loctextX//2, self.loctextY//2+125
+            )    
+        if curr_org == "South Asian Student Society":
+            self.blit_icon(
+                display_org.loc[:, 'Image'].values[0], 
+                0.28, 255,
+                self.loctextX//2, self.loctextY//2+100
+            )   
+        if curr_org == "The Brotherhood":
+            self.blit_icon(
+                display_org.loc[:, 'Image'].values[0], 
+                0.5, 125,
+                self.loctextX//2, self.loctextY//2
+            )   
+        if curr_org == "The HEAT":
+            self.blit_icon(
+                display_org.loc[:, 'Image'].values[0], 
+                0.5, 255,
+                self.loctextX//2, self.loctextY//2+100
+            ) 
+        if curr_org == "Vietnamese Student Association":
+            self.blit_icon(
+                display_org.loc[:, 'Image'].values[0], 
+                0.3, 255,
+                self.loctextX//2, self.loctextY//2+50
+            ) 
+        if curr_org == "Association of Asian, Pacific Islander, and Desi American":
+            pass     
+        if curr_org == "Ladies and Allies for Cross-Cultural Education":
+            self.blit_icon(
+                display_org.loc[:, 'Image'].values[0], 
+                1, 255,
+                self.loctextX//2, self.loctextY//2+50
+            ) 
+        if curr_org == "Minority Association of Pre-Medication Students":
+            self.blit_icon(
+                display_org.loc[:, 'Image'].values[0], 
+                1, 255,
+                self.loctextX//2, self.loctextY//2+100
+            ) 
+        if curr_org == "The X-Cell Dance Team":
+            self.blit_icon(
+                display_org.loc[:, 'Image'].values[0], 
+                0.25, 255,
+                self.loctextX//2, self.loctextY//2+100
+            ) 

@@ -1,7 +1,8 @@
 import pygame
 
-def text_box(font, content, size, loctextX, loctextY, color):
+def text_box(font, content, size, loctextX, loctextY, color, bold=False):
     font = pygame.font.SysFont(font, size)
+    if bold == True: font.bold = True
     text = font.render(content, 1, color)
     # text surface object
     textRect = text.get_rect()

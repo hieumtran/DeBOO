@@ -7,6 +7,7 @@ from fgame.question_frame import *
 from fgame.response_frame import *
 from fgame.answer_frame import *
 from fgame.info_frame import *
+from ult.buttons import *
 
 # Init game resolution
 pygame.init()
@@ -23,7 +24,7 @@ read_question = pd.read_csv('./data/Q_ID.csv')
 read_question = read_question.set_index('ID')
 
 seed = 0
-frames = [0, 0, 0, 0, 0, 1]
+frames = [0, 1, 0, 0, 0, 0]
 '''
 0: Menu
 1: Question
@@ -40,19 +41,39 @@ finfo_frame = Info_frame(screen, Xscreen, Yscreen)
 
 frame_cnt_thinking = 50
 frame_cnt_response = 50
-frame_cnt_answer = 500
+frame_cnt_answer = 300
+
+frame_cnt_random = 30
 
 shuffle_question = True
 shuffle_response = True
 init_params = True
+init_random = True
 del_question = False
 answer_click_state = False
+reset_arrow = False
 
 interact_1, interact_2, interact_3 = None, None, None
+arrow, arrow_rect = None, None
 
 while running:
     # White background color
     screen.fill((255, 255, 255))
+
+    # if frames[1] == 1 or frames[2] == 1 or frames[3] == 1:
+    #     character = pygame.image.load('./sprites/character/random.png')
+    #     character = pygame.transform.scale_by(character, 0.1)
+    #     if init_random:
+    #         xrandom = random.randint(0, Xscreen)
+    #         yrandom = random.randint(0, Yscreen)
+    #         init_random = False
+    #     screen.blit(character, (xrandom, yrandom)) 
+    #     frame_cnt_random -= 1
+    #     if frame_cnt_random < 0:
+    #         init_random = True
+    #         frame_cnt_random = 30
+        
+    
 
     if init_params == True:
         # Init Org choice and answer
@@ -82,10 +103,14 @@ while running:
 
     # Question frame
     if frames[1] == 1:
-        interact_1, interact_2 = fquest_frame.display(
-            read_question.loc[game_question[curr_quest_1], :].values[0],
-            read_question.loc[game_question[curr_quest_2], :].values[0]
-        )
+        if len(game_question) > 2:
+            interact_1, interact_2 = fquest_frame.display(
+                read_question.loc[game_question[curr_quest_1], :].values[0],
+                read_question.loc[game_question[curr_quest_2], :].values[0]
+            )
+        else:
+            fquest_frame.display_NMQ()
+
         atext, atextRect = text_box(
             'ALGERIAN',
             'ANSWER',
@@ -95,10 +120,18 @@ while running:
             (0, 0, 0)
         )
         screen.blit(atext, atextRect)
+        
         # Colorful Animation
         mpos = pygame.mouse.get_pos()
-        if interact_1.collidepoint(mpos): pygame.draw.rect(screen, (239, 62, 91), interact_1, 3, 10)
-        if interact_2.collidepoint(mpos): pygame.draw.rect(screen, (239, 62, 91), interact_2, 3, 10)
+        
+        arrow, arrow_rect = display_arrow(Xscreen, Yscreen)
+        screen.blit(arrow, arrow_rect)
+        if arrow_rect.collidepoint(mpos):
+            fill(arrow, pygame.Color(255, 0, 0))
+            screen.blit(arrow, arrow_rect)
+        if (interact_1 != None) and (interact_2 != None):
+            if interact_1.collidepoint(mpos): pygame.draw.rect(screen, (239, 62, 91), interact_1, 3, 10)
+            if interact_2.collidepoint(mpos): pygame.draw.rect(screen, (239, 62, 91), interact_2, 3, 10)
         if atextRect.collidepoint(mpos):
             font = pygame.font.SysFont('ALGERIAN', size=48)
             atext = font.render('ANSWER', 1, (239, 62, 91))
@@ -138,7 +171,14 @@ while running:
             (0, 0, 0)
         )
         screen.blit(atext, atextRect)
+
         mpos = pygame.mouse.get_pos()
+        if answer_click_state != True: 
+            arrow, arrow_rect = display_arrow(Xscreen, Yscreen)
+            screen.blit(arrow, arrow_rect)
+            if arrow_rect.collidepoint(mpos):
+                fill(arrow, pygame.Color(255, 0, 0))
+                screen.blit(arrow, arrow_rect)
         if interact_1.collidepoint(mpos): pygame.draw.rect(screen, (239, 62, 91), interact_1, 3, 10)
         if interact_2.collidepoint(mpos): pygame.draw.rect(screen, (239, 62, 91), interact_2, 3, 10)
         if interact_3.collidepoint(mpos): pygame.draw.rect(screen, (239, 62, 91), interact_3, 3, 10)
@@ -155,47 +195,76 @@ while running:
     # Information frame
     if frames[5] == 1:
         finfo_frame.display_info(df, curr_org)
-        
-
+        mpos = pygame.mouse.get_pos()
+        if answer_click_state != True: 
+            arrow, arrow_rect = display_arrow(Xscreen, Yscreen)
+            screen.blit(arrow, arrow_rect)
+            if arrow_rect.collidepoint(mpos):
+                fill(arrow, pygame.Color(255, 0, 0))
+                screen.blit(arrow, arrow_rect)
                 
     # Play action
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             running = False
         if event.type == pygame.MOUSEBUTTONDOWN:
-            # Question frame
-            if pygame.mouse.get_pressed()[0] and (interact_1 != None) \
-                and (interact_2 != None) and (frames[1] == 1):
-                mpos = pygame.mouse.get_pos()
-                if interact_1.collidepoint(mpos):
-                    frames[1], frames[2] = 0, 1
-                    value = goal.loc[:, game_question[curr_quest_1]].values[0]
-                    game_question.remove(game_question[curr_quest_1])
-                    shuffle_question = True
-                    del_question = True
+            if pygame.mouse.get_pressed()[0]: 
+                # Question frame
+                if (frames[1] == 1):
+                    if (interact_1 != None) and (interact_2 != None):
+                        mpos = pygame.mouse.get_pos()
+                        if interact_1.collidepoint(mpos):
+                            frames[1], frames[2] = 0, 1
+                            value = goal.loc[:, game_question[curr_quest_1]].values[0]
+                            game_question.remove(game_question[curr_quest_1])
+                            shuffle_question = True
+                            del_question = True
 
-                if interact_2.collidepoint(mpos):
-                    frames[1], frames[2] = 0, 1
-                    value = goal.loc[:, game_question[curr_quest_2]].values[0]
-                    game_question.remove(game_question[curr_quest_2])
-                    shuffle_question = True
-                    del_question = True
-                    
-                if atextRect.collidepoint(mpos):
-                    del_question = True
-                    frames[4], frames[1] = 1, 0
+                        if interact_2.collidepoint(mpos):
+                            frames[1], frames[2] = 0, 1
+                            value = goal.loc[:, game_question[curr_quest_2]].values[0]
+                            game_question.remove(game_question[curr_quest_2])
+                            shuffle_question = True
+                            del_question = True
+
+                    if atextRect != None:   
+                        if atextRect.collidepoint(mpos):
+                            del_question = True
+                            frames[4], frames[1] = 1, 0
+
+                # Answer frame
+                if (frames[4] == 1):
+                    if (interact_1 != None) and (interact_2 != None) and (interact_3 != None):
+                        mpos = pygame.mouse.get_pos()
+                        if interact_1.collidepoint(mpos) or interact_2.collidepoint(mpos) \
+                            or interact_3.collidepoint(mpos):
+                            answer_click_state = True
+                            reset_arrow = True
+    
+                    if (arrow_rect != None):
+                        mpos = pygame.mouse.get_pos()
+                        if arrow_rect.collidepoint(mpos):
+                            frames[4], frames[1] = 0, 1
+
+                # Info frame
+                if (frames[5] == 1): 
+                    mpos = pygame.mouse.get_pos()
+                    if arrow_rect.collidepoint(mpos):
+                        frames[5], frames[1] = 0, 1
+                        init_params = True
+
+            if reset_arrow == True:
+                arrow = None
+                arrow_rect = None
+                reset_arrow = False
+
+            if del_question:
+                interact_1 = None
+                interact_2 = None
+                interact_3 = None
+                atextRect = None
+                del_question = False
                 
-                if del_question:
-                    interact_1 = None
-                    interact_2 = None
-                    del_question = False
-
-            # Answer frame
-            if pygame.mouse.get_pressed()[0] and (interact_1 != None) \
-                and (interact_2 != None) and (interact_3 != None) and (frames[4] == 1):
-                mpos = pygame.mouse.get_pos()
-                answer_click_state = True
-
     # print(curr_org)        
     # Draws the surface object to the screen.
     pygame.display.update()

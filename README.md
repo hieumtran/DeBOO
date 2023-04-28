@@ -13,7 +13,7 @@ python src/display.py
 ```
 
 ## Sample capture
-<!-- ![alt text](https://github.com/[username]/[reponame]/blob/[branch]/image.jpg?raw=true) -->
+![alt text](https://raw.githubusercontent.com/hieumtran/DPUConnect/main/sample/sample_1.png?token=GHSAT0AAAAAACBS3Z6447IXIN6D3O7Y2GWUZCLVYLA)
 
 
 

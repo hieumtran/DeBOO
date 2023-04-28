@@ -27,7 +27,7 @@ read_question = pd.read_csv('./data/Q_ID.csv')
 read_question = read_question.set_index('ID')
 
 seed = 0
-frames = [0, 0, 0, 0, 0, 0, 1]
+frames = [1, 0, 0, 0, 0, 0, 0]
 '''
 0: Menu
 1: Question
@@ -240,7 +240,8 @@ while running:
         if answer_click_state:
             fanswer_frame.discriminator(correct_index, interact_1, interact_2, interact_3)
             if chosen_answer != None: 
-                if chosen_answer != correct_index: text_score = 0
+                if chosen_answer != correct_index: 
+                    text_score = 0
             frame_cnt_answer -= 1
             if frame_cnt_answer < 0:
                 frame_cnt_answer = 200
@@ -371,8 +372,9 @@ while running:
                 
                 if (frames[6] == 1):
                     mpos = pygame.mouse.get_pos()
-                    if home_rect.collidepoint(mpos):
-                        frames[6], frames[0] = 0, 1
+                    if home_rect != None:
+                        if home_rect.collidepoint(mpos):
+                            frames[6], frames[0] = 0, 1
 
             if reset_arrow == True:
                 arrow = None

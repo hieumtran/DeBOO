@@ -12,7 +12,9 @@ pip install -r requirements.txt
 python src/display.py
 ```
 
-## Features
+## Sample capture
+<!-- ![alt text](https://github.com/[username]/[reponame]/blob/[branch]/image.jpg?raw=true) -->
+
 
 
 ## License

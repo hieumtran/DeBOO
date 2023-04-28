@@ -23,5 +23,5 @@ def display_home(Xscreen, Yscreen):
     home = pygame.transform.scale_by(home, 0.15)
     home_rect = home.get_rect()
 
-    home_rect.center = (Xscreen//2+470, Yscreen//2+280)
+    home_rect.center = (Xscreen, Yscreen)
     return home, home_rect

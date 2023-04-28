@@ -102,44 +102,46 @@ while running:
         if len(game_question) > 2:
             interact_1, interact_2 = fquest_frame.display(
                 read_question.loc[game_question[0], :].values[0],
-                read_question.loc[game_question[1], :].values[0]
+                read_question.loc[game_question[1], :].values[0],
+                (0,0,0),
+                True,
+                True
             )
         else:
             fquest_frame.display_NMQ()
-
-        # atext, atextRect = text_box(
-        #     'ALGERIAN',
-        #     'ANSWER',
-        #     48,
-        #     Xscreen*6.2/7,
-        #     Yscreen/15,
-        #     (0, 0, 0)
-        # )
-        # screen.blit(atext, atextRect)
-        
-        
         
         # Colorful Animation
         mpos = pygame.mouse.get_pos()
         
-        arrow, arrow_rect = display_arrow(Xscreen, Yscreen)
-        screen.blit(arrow, arrow_rect)
-        home, home_rect = display_home(Xscreen, Yscreen)
+        home, home_rect = display_home(Xscreen//2-470, Yscreen//2+280)
         screen.blit(home, home_rect)
         answer_box, answer_box_rect = display_checkbox(
             screen,
             './sprites/Extras/answer_orginal.png',
             Xscreen//2+450, 50
         )
-        if arrow_rect.collidepoint(mpos):
-            fill(arrow, pygame.Color(255, 0, 0))
-            screen.blit(arrow, arrow_rect)
         if home_rect.collidepoint(mpos):
-            fill(home, pygame.Color(255, 0, 0))
+            fill(home, pygame.Color(0, 0, 255))
             screen.blit(home, home_rect)
         if (interact_1 != None) and (interact_2 != None):
-            if interact_1.collidepoint(mpos): pygame.draw.rect(screen, (239, 62, 91), interact_1, 3, 10)
-            if interact_2.collidepoint(mpos): pygame.draw.rect(screen, (239, 62, 91), interact_2, 3, 10)
+            if interact_1.collidepoint(mpos): 
+                interact_1, interact_2 = fquest_frame.display(
+                    read_question.loc[game_question[0], :].values[0],
+                    read_question.loc[game_question[1], :].values[0],
+                    (0,0,255),
+                    True,
+                    False
+                )
+                pygame.draw.rect(screen, (0, 0, 255), interact_1, 3, 10)
+            if interact_2.collidepoint(mpos): 
+                interact_1, interact_2 = fquest_frame.display(
+                    read_question.loc[game_question[0], :].values[0],
+                    read_question.loc[game_question[1], :].values[0],
+                    (0,0,255),
+                    False,
+                    True
+                )
+                pygame.draw.rect(screen, (0, 0, 255), interact_2, 3, 10)
         if answer_box_rect.collidepoint(mpos):
             answer_box, answer_box_rect = display_checkbox(            
             screen,

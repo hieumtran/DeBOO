@@ -34,10 +34,10 @@ class Q_frame():
         assert len(ask_question_ID) == 2
         return ask_question_ID
 
-    def display(self, question_1, question_2):
+    def display(self, question_1, question_2, text_color, render_text_1, render_text_2):
         display_bubble(self.screen, self.loctextX, self.loctextY)
         self.add_characters()  
-        text_color = (0,0,0)
+        # text_color = (0,0,0)
         # Text with bubble Display
         text_conv, textRect_conv = text_box(
             'Comicsansms',
@@ -45,7 +45,7 @@ class Q_frame():
             25,
             self.loctextX*3/5, 
             self.loctextY*1/2.7,
-            text_color
+            (0,0,0)
         )
         self.screen.blit(text_conv, textRect_conv)
         
@@ -58,7 +58,7 @@ class Q_frame():
             self.loctextY*2/2.7,
             text_color
         )
-        self.screen.blit(text_1, textRect_1)
+        if render_text_1: self.screen.blit(text_1, textRect_1)
         textRect_interact_1 = display_animationbox(
             self.screen,
             textRect_1,
@@ -73,7 +73,7 @@ class Q_frame():
             self.loctextY*2.3/2.7,
             text_color
         )
-        self.screen.blit(text_2, textRect_2)
+        if render_text_2: self.screen.blit(text_2, textRect_2)
         textRect_interact_2 = display_animationbox(
             self.screen,
             textRect_2,

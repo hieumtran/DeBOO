@@ -16,6 +16,7 @@ class Info_frame():
         self.screen.blit(icon, icon_rect) 
 
     def display_info(self, df, curr_org):
+        # curr_org = 'The Brotherhood'
         display_org = df.loc[df['Organization'] == curr_org, :]
 
         # Display icon

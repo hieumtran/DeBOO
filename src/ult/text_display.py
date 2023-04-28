@@ -21,3 +21,11 @@ def display_animationbox(screen, textRect, locX, locY, width, height):
     fixed_textRect.center = textRect.center
     pygame.draw.rect(screen, (0,0,0), fixed_textRect, 3, 10)
     return fixed_textRect
+
+def display_checkbox(screen, file, loctextX, loctextY):
+    answer_box = pygame.image.load(file)
+    answer_box = pygame.transform.scale_by(answer_box, 0.2)
+    answer_box_rect = answer_box.get_rect()
+    answer_box_rect.center = (loctextX, loctextY) 
+    screen.blit(answer_box, answer_box_rect)
+    return answer_box, answer_box_rect

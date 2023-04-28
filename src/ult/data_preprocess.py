@@ -9,7 +9,6 @@ def dup_check(df):
         print(len(df))
         print(df_dup.index)
         print(df.index)
-    
 
 def drop(df):
     df.drop('Total attributes', axis=1, inplace=True)

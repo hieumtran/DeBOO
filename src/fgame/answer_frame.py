@@ -9,8 +9,9 @@ class Answer_frame():
         self.loctextX = loctextX
         self.loctextY = loctextY
 
-    def display_answer(self, answer_list):
-        text_color = (0,0,0)
+    def display_answer(self, answer_list, text_color, 
+                       render_text_1, render_text_2, render_text_3):
+        
         text_1, textRect_1 = text_box(
             'Comicsansms',
             answer_list[0], 
@@ -19,14 +20,12 @@ class Answer_frame():
             self.loctextY//2-150,
             text_color
         )
-        self.screen.blit(text_1, textRect_1)
-        # textRect_interact_1 = self.display_answerbox(textRect_1)
         textRect_interact_1 = display_animationbox(
             self.screen,
             textRect_1,
             30, 50, 1000, 100
         )
-        
+    
         text_2, textRect_2 = text_box(
             'Comicsansms',
             answer_list[1], 
@@ -35,13 +34,12 @@ class Answer_frame():
             self.loctextY//2,
             text_color
         )
-        self.screen.blit(text_2, textRect_2)
         textRect_interact_2 = display_animationbox(
             self.screen,
             textRect_2,
             30, 50, 1000, 100
         )
-
+    
         text_3, textRect_3 = text_box(
             'Comicsansms',
             answer_list[2], 
@@ -50,12 +48,14 @@ class Answer_frame():
             self.loctextY//2+150,
             text_color
         )
-        self.screen.blit(text_3, textRect_3)
         textRect_interact_3 = display_animationbox(
             self.screen,
             textRect_3,
             30, 50, 1000, 100
         )
+        if render_text_1: self.screen.blit(text_1, textRect_1)
+        if render_text_2: self.screen.blit(text_2, textRect_2)
+        if render_text_3: self.screen.blit(text_3, textRect_3)
         return textRect_interact_1, textRect_interact_2, textRect_interact_3
 
     def discriminator(self, correct_index, interact_1, interact_2, interact_3):

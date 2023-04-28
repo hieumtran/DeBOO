@@ -148,11 +148,7 @@ while running:
             './sprites/Extras/answer.png',
             Xscreen//2+450, 50
         )
-        # if atextRect.collidepoint(mpos):
-        #     font = pygame.font.SysFont('ALGERIAN', size=48)
-        #     atext = font.render('ANSWER', 1, (239, 62, 91))
-        #     screen.blit(atext, atextRect)
-            
+
     # Thinking frame
     if frames[2] == 1:
         fresponse_frame.display_thinking('Hmmmm.....')
@@ -177,7 +173,13 @@ while running:
     
     # Answer frame
     if frames[4] == 1:
-        interact_1, interact_2, interact_3 = fanswer_frame.display_answer(answer_list)
+        interact_1, interact_2, interact_3 = fanswer_frame.display_answer(
+            answer_list,
+            (0,0,0),
+            True,
+            True,
+            True
+        )
         atext, atextRect = text_box(
             'ALGERIAN',
             'Choose an answer below',
@@ -193,11 +195,35 @@ while running:
             arrow, arrow_rect = display_arrow(Xscreen, Yscreen)
             screen.blit(arrow, arrow_rect)
             if arrow_rect.collidepoint(mpos):
-                fill(arrow, pygame.Color(255, 0, 0))
+                fill(arrow, pygame.Color(0, 0, 255))
                 screen.blit(arrow, arrow_rect)
-        if interact_1.collidepoint(mpos): pygame.draw.rect(screen, (0, 0, 255), interact_1, 3, 10)
-        if interact_2.collidepoint(mpos): pygame.draw.rect(screen, (0, 0, 255), interact_2, 3, 10)
-        if interact_3.collidepoint(mpos): pygame.draw.rect(screen, (0, 0, 255), interact_3, 3, 10)
+        if interact_1.collidepoint(mpos): 
+            interact_1, interact_2, interact_3 = fanswer_frame.display_answer(
+                answer_list,
+                (0,0,255),
+                True,
+                False,
+                False
+            )
+            pygame.draw.rect(screen, (0, 0, 255), interact_1, 3, 10)
+        if interact_2.collidepoint(mpos): 
+            interact_1, interact_2, interact_3 = fanswer_frame.display_answer(
+                answer_list,
+                (0,0,255),
+                False,
+                True,
+                False
+            )
+            pygame.draw.rect(screen, (0, 0, 255), interact_2, 3, 10)
+        if interact_3.collidepoint(mpos): 
+            interact_1, interact_2, interact_3 = fanswer_frame.display_answer(
+                answer_list,
+                (0,0,255),
+                False,
+                False,
+                True
+            )
+            pygame.draw.rect(screen, (0, 0, 255), interact_3, 3, 10)
 
         if answer_click_state:
             fanswer_frame.discriminator(correct_index, interact_1, interact_2, interact_3)
@@ -216,14 +242,14 @@ while running:
             arrow, arrow_rect = display_arrow(Xscreen, Yscreen)
             screen.blit(arrow, arrow_rect)
             if arrow_rect.collidepoint(mpos):
-                fill(arrow, pygame.Color(255, 0, 0))
+                fill(arrow, pygame.Color(0, 0, 255))
                 screen.blit(arrow, arrow_rect)
             
-            home, home_rect = display_home(Xscreen, Yscreen)
-            screen.blit(home, home_rect)
-            if home_rect.collidepoint(mpos):
-                fill(home, pygame.Color(255, 0, 0))
-                screen.blit(home, home_rect)
+            # home, home_rect = display_home(Xscreen, Yscreen)
+            # screen.blit(home, home_rect)
+            # if home_rect.collidepoint(mpos):
+            #     fill(home, pygame.Color(255, 0, 0))
+            #     screen.blit(home, home_rect)
                 
     # Play action
     for event in pygame.event.get():
@@ -263,7 +289,7 @@ while running:
                             answer_click_state = True
                             reset_arrow = True
     
-                    if (answer_box != None):
+                    if (answer_box != None) and (arrow_rect != None):
                         mpos = pygame.mouse.get_pos()
                         if arrow_rect.collidepoint(mpos):
                             frames[4], frames[1] = 0, 1

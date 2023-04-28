@@ -92,6 +92,7 @@ while running:
     # Menu frame
     if frames[0] == 1:
         # display_depauw(screen, Xscreen//2, Yscreen//2-180)
+        init_params = True
         startRect, tutorialRect = fmenu_frame.display_menu(48, False, False)
         mpos = pygame.mouse.get_pos()
         if startRect.collidepoint(mpos):

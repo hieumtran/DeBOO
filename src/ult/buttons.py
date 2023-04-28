@@ -25,3 +25,19 @@ def display_home(Xscreen, Yscreen):
 
     home_rect.center = (Xscreen, Yscreen)
     return home, home_rect
+
+def display_restart(Xscreen, Yscreen):
+    home = pygame.image.load('./sprites/Extras/restart.png').convert_alpha()
+    home = pygame.transform.scale_by(home, 0.15)
+    home_rect = home.get_rect()
+
+    home_rect.center = (Xscreen, Yscreen)
+    return home, home_rect
+
+def add_deco(screen, file, scale, Xscreen, Yscreen):
+    image = pygame.image.load(file)
+    # Scale the image to your needed size
+    image = pygame.transform.scale_by(image, scale)
+    image_rect = image.get_rect()
+    image_rect.center = (Xscreen, Yscreen)
+    screen.blit(image, image_rect)

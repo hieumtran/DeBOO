@@ -34,10 +34,11 @@ def display_restart(Xscreen, Yscreen):
     home_rect.center = (Xscreen, Yscreen)
     return home, home_rect
 
-def add_deco(screen, file, scale, Xscreen, Yscreen):
+def add_deco(screen, file, scale, Xscreen, Yscreen, rotate=None):
     image = pygame.image.load(file)
     # Scale the image to your needed size
     image = pygame.transform.scale_by(image, scale)
+    if rotate != None: image = pygame.transform.rotate(image, rotate)
     image_rect = image.get_rect()
     image_rect.center = (Xscreen, Yscreen)
     screen.blit(image, image_rect)

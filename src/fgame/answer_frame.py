@@ -1,6 +1,4 @@
 import pygame
-import numpy as np
-import random
 from ult.text_display import *
 
 class Answer_frame():

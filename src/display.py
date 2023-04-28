@@ -8,6 +8,7 @@ from fgame.response_frame import *
 from fgame.answer_frame import *
 from fgame.info_frame import *
 from fgame.menu_frame import *
+from fgame.tutorial_frame import *
 from ult.buttons import *
 
 # Init game resolution
@@ -26,7 +27,7 @@ read_question = pd.read_csv('./data/Q_ID.csv')
 read_question = read_question.set_index('ID')
 
 seed = 0
-frames = [1, 0, 0, 0, 0, 0]
+frames = [0, 0, 0, 0, 0, 0, 1]
 '''
 0: Menu
 1: Question
@@ -34,6 +35,7 @@ frames = [1, 0, 0, 0, 0, 0]
 3: Response
 4: Answer
 5: Info
+6: Tutorial
 '''
 
 fquest_frame = Q_frame(screen, Xscreen, Yscreen, 'Choose a question')
@@ -41,6 +43,7 @@ fresponse_frame = Response_frame(screen, Xscreen, Yscreen)
 fanswer_frame = Answer_frame(screen, Xscreen, Yscreen)
 finfo_frame = Info_frame(screen, Xscreen, Yscreen)
 fmenu_frame = Menu_frame(screen, Xscreen, Yscreen)
+ftutorial_frame = Tutorial_frame(screen, Xscreen, Yscreen)
 
 frame_cnt_thinking = 50
 frame_cnt_response = 50
@@ -60,6 +63,7 @@ interact_1, interact_2, interact_3 = None, None, None
 arrow, arrow_rect = None, None
 answer_box_rect = None
 home_rect, restart_rect = None, None
+chosen_answer = None
 
 while running:
     # White background color
@@ -81,6 +85,7 @@ while running:
         # Question
         question = df.columns[4:].to_list()
         game_question = df.columns[4:].to_list()
+        text_score = 440
         shuffle_question = True
         init_params = False
         
@@ -234,6 +239,8 @@ while running:
 
         if answer_click_state:
             fanswer_frame.discriminator(correct_index, interact_1, interact_2, interact_3)
+            if chosen_answer != None: 
+                if chosen_answer != correct_index: text_score = 0
             frame_cnt_answer -= 1
             if frame_cnt_answer < 0:
                 frame_cnt_answer = 200
@@ -245,12 +252,11 @@ while running:
     if frames[5] == 1:
         finfo_frame.display_info(df, curr_org)
         mpos = pygame.mouse.get_pos()
-        if answer_click_state != True: 
-            arrow, arrow_rect = display_arrow(Xscreen, Yscreen)
+        arrow, arrow_rect = display_arrow(Xscreen, Yscreen)
+        screen.blit(arrow, arrow_rect)
+        if arrow_rect.collidepoint(mpos):
+            fill(arrow, pygame.Color(0, 0, 255))
             screen.blit(arrow, arrow_rect)
-            if arrow_rect.collidepoint(mpos):
-                fill(arrow, pygame.Color(0, 0, 255))
-                screen.blit(arrow, arrow_rect)
         score_display, scoreRect = text_box(
             'Comicsansms',
             f'Total Score: {text_score}',
@@ -260,6 +266,16 @@ while running:
             (0,0,0)
         )
         screen.blit(score_display, scoreRect)
+    
+    # Tutorial frame
+    if frames[6] == 1:
+        ftutorial_frame.display_tutorial()
+        mpos = pygame.mouse.get_pos()
+        home, home_rect = display_home(Xscreen//2-470, Yscreen//2+280)
+        screen.blit(home, home_rect)
+        if home_rect.collidepoint(mpos):
+            fill(home, pygame.Color(0, 0, 255))
+            screen.blit(home, home_rect)
 
     if (frames[1] == 1) or (frames[2] == 1) or (frames[3] == 1):
         add_deco(screen, './sprites/deco/deco_1.png', 1, 100, 150) 
@@ -286,6 +302,8 @@ while running:
                     mpos = pygame.mouse.get_pos()
                     if startRect.collidepoint(mpos):
                         frames[0], frames[1] = 0, 1
+                    if tutorialRect.collidepoint(mpos):
+                        frames[0], frames[6] = 0, 1
 
                 # Question frame
                 if (frames[1] == 1):
@@ -326,8 +344,16 @@ while running:
                 if (frames[4] == 1):
                     if (interact_1 != None) and (interact_2 != None) and (interact_3 != None):
                         mpos = pygame.mouse.get_pos()
-                        if interact_1.collidepoint(mpos) or interact_2.collidepoint(mpos) \
-                            or interact_3.collidepoint(mpos):
+                        if interact_1.collidepoint(mpos): 
+                            chosen_answer = 0
+                            answer_click_state = True
+                            reset_arrow = True
+                        if interact_2.collidepoint(mpos): 
+                            chosen_answer = 1
+                            answer_click_state = True
+                            reset_arrow = True
+                        if interact_3.collidepoint(mpos): 
+                            chosen_answer = 2
                             answer_click_state = True
                             reset_arrow = True
     
@@ -343,6 +369,10 @@ while running:
                         frames[5], frames[1] = 0, 1
                         init_params = True
                 
+                if (frames[6] == 1):
+                    mpos = pygame.mouse.get_pos()
+                    if home_rect.collidepoint(mpos):
+                        frames[6], frames[0] = 0, 1
 
             if reset_arrow == True:
                 arrow = None

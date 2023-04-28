@@ -1,6 +1,6 @@
 # DPUConnect
 ## Description
-This is a game for CDI and promoted in Tenzer kiosk and CDI website. The game is developed by data collected from DePauw organizations affliated with The Center for Diversity and Inclusion (CDI), such as VSA, J-club, the Brotherhood, Feminista!, WICS, Students of Color in STEM, and many other organizations. DeBOO prefers cross-cultural activities with various genders, religions and majors. The BOO, Boss Of Organiztions, entertain and promote various CDI organizations through a series of questions.
+This is a game designed to promote cultural diversity and inclusion, which is available at the Tenzer kiosk and CDI website. The game uses data collected from various organizations affiliated with DePauw's Center for Diversity and Inclusion (CDI), such as VSA, J-club, the Brotherhood, Feminista!, WICS, and Students of Color in STEM. DeBOO, the Boss Of Organizations, prefers cross-cultural activities involving people from diverse genders, religions, and majors. The game consists of a series of questions aimed at entertaining and promoting various CDI organizations.
 
 ## Requirements
 ```

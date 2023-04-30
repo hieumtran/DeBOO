@@ -32,7 +32,6 @@ def match_questions(df, question):
 if __name__ == "__main__":
     df = pd.read_csv('./data/Q_CDI.csv')
     question = pd.read_csv('./data/Q_ID.csv')
-    # Preprocess data
-    # drop(df)
+
     dup_check(df)
     match_questions(df, question)

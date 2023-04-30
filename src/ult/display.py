@@ -40,6 +40,7 @@ def display_text(
     textRect.center = (locX, locY)
     return text, textRect
 
+
 def display_textbox(
         screen, 
         textRect, 

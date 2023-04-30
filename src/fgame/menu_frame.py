@@ -1,6 +1,7 @@
 import pygame
-from ult.text_display import *
+# from ult.text_display import *
 from ult.buttons import *
+from ult.display import *
 
 class Menu_frame():
     def __init__(self, screen, Xscreen, Yscreen):
@@ -39,7 +40,7 @@ class Menu_frame():
     def display_menu(self, size, hoover_start, hoover_tutorial):
         # Start box
         if hoover_start:
-            start, startRect = text_box(
+            start, startRect = display_text(
                 './font/Atma-Bold.ttf', 
                 'START', 
                 size+20, 
@@ -49,18 +50,18 @@ class Menu_frame():
                 custom_font=True
                 # bold=True
             )
-            display_animationbox(
+            display_textbox(
                 self.screen,
                 startRect,
                 30, 50, 405+20, 105+20
             )
-            startRect_interact_1 = display_animationbox(
+            startRect_interact_1 = display_textbox(
                 self.screen,
                 startRect,
                 30, 50, 400+20, 100+20
             )
         else:
-            start, startRect = text_box(
+            start, startRect = display_text(
                 './font/Atma-Bold.ttf', 
                 'START', 
                 size, 
@@ -70,12 +71,12 @@ class Menu_frame():
                 custom_font=True
                 # bold=True
             )
-            display_animationbox(
+            display_textbox(
                 self.screen,
                 startRect,
                 30, 50, 405, 105
             )
-            startRect_interact_1 = display_animationbox(
+            startRect_interact_1 = display_textbox(
                 self.screen,
                 startRect,
                 30, 50, 400, 100
@@ -85,7 +86,7 @@ class Menu_frame():
         self.screen.blit(start, startRect)
 
         if hoover_tutorial:
-            tutorial, tutorialRect = text_box(
+            tutorial, tutorialRect = display_text(
                 './font/Atma-Bold.ttf', 
                 'TUTORIAL', 
                 size+20, 
@@ -95,18 +96,18 @@ class Menu_frame():
                 custom_font=True
                 # bold=True
             )
-            tutorialRect_shadow = display_animationbox(
+            tutorialRect_shadow = display_textbox(
                 self.screen,
                 tutorialRect,
                 30, 50, 405+20, 105+20
             )
-            tutorialRect_interact_1 = display_animationbox(
+            tutorialRect_interact_1 = display_textbox(
                 self.screen,
                 tutorialRect,
                 30, 50, 400+20, 100+20
             )
         else:
-            tutorial, tutorialRect = text_box(
+            tutorial, tutorialRect = display_text(
                 './font/Atma-Bold.ttf', 
                 'TUTORIAL', 
                 size, 
@@ -116,12 +117,12 @@ class Menu_frame():
                 custom_font=True
                 # bold=True
             )
-            tutorialRect_shadow = display_animationbox(
+            tutorialRect_shadow = display_textbox(
                 self.screen,
                 tutorialRect,
                 30, 50, 405, 105
             )
-            tutorialRect_interact_1 = display_animationbox(
+            tutorialRect_interact_1 = display_textbox(
                 self.screen,
                 tutorialRect,
                 30, 50, 400, 100
@@ -132,7 +133,7 @@ class Menu_frame():
         self.screen.blit(tutorial, tutorialRect)
 
         # Title
-        deboo, debooRect = text_box(
+        deboo, debooRect = display_text(
             './font/Atma-Bold.ttf', 
             'DeBOO', 
             48+50, 
@@ -142,12 +143,12 @@ class Menu_frame():
             custom_font=True
             # bold=True
         )
-        deboo_shadow = display_animationbox(
+        deboo_shadow = display_textbox(
             self.screen,
             debooRect,
             30, 50, 405, 155
         )
-        deBoo_interact = display_animationbox(
+        deBoo_interact = display_textbox(
             self.screen,
             debooRect,
             30, 50, 400, 150

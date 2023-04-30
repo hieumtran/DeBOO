@@ -10,7 +10,6 @@ def display_element(
         rotation=None
     ):
     '''Render sprites on pygame window'''
-    # Load image
     image = pygame.image.load(filename)
     if scale != None: image = pygame.transform.scale_by(image, scale)
     if rotation != None: image = pygame.transform.rotate(image, rotation)

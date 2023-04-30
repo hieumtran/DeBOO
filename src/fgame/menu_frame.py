@@ -92,7 +92,6 @@ class Menu_frame():
                 self.Yscreen//2+100, 
                 (0, 0, 0), 
                 custom_font=True
-                # bold=True
             )
             display_textbox(
                 self.screen,

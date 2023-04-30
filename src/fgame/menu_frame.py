@@ -1,5 +1,4 @@
 import pygame
-# from ult.text_display import *
 from ult.buttons import *
 from ult.display import *
 

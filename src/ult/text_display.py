@@ -5,9 +5,7 @@ def text_box(font, content, size, loctextX, loctextY, color, bold=False, custom_
     else: font = pygame.font.SysFont(font, size)
     if bold == True: font.bold = True
     text = font.render(content, 1, color)
-    # text surface object
     textRect = text.get_rect()
-    # set the center of the rectangular object.
     textRect.center = (loctextX, loctextY)
     return text, textRect
 

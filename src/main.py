@@ -390,8 +390,6 @@ while running:
                 restart_rect = None
                 del_question = False
                 
-    # print(curr_org)        
-    # Draws the surface object to the screen.
     pygame.display.update()
 
 
